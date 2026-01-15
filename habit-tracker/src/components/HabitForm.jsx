@@ -1,25 +1,35 @@
-export const HabitForm = () => {
+export const HabitForm = ({ form, handleFormChange, handleFormSubmit }) => {
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        handleFormSubmit()
+    }
+
     return (
         <div className="add-habit-section">
             <h2>➕ Add New Habit</h2>
-            <form className="form-grid">
+            <form onSubmit={handleSubmit} className="form-grid">
                 <div className="form-group">
                     <label for="habit-name">Habit Name</label>
                     <input
+                        onChange={handleFormChange}
                         type="text"
                         id="habit-name"
-                        placeholder="e.g., Morning Exercise"
-                        value="" />
+                        value={form.habitName}
+                        name="habitName"
+                        placeholder="e.g., Morning Exercise" />
                 </div>
 
                 <div className="form-row">
                     <div className="form-group">
                         <label for="frequency">Frequency</label>
-                        <select id="frequency">
-                            <option>Daily</option>
-                            <option>Weekly</option>
-                            <option>Weekdays</option>
-                            <option>Weekends</option>
+                        <select id="frequency"
+                            name="frequency"
+                            value={form.frequency}
+                            onChange={handleFormChange}>
+                            <option value="daily">Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="weekdays">Weekdays</option>
+                            <option value="weekends">Weekends</option>
                         </select>
                     </div>
 
@@ -28,9 +38,11 @@ export const HabitForm = () => {
                             Notification Time
                         </label>
                         <input
+                            onChange={handleFormChange}
                             type="time"
+                            name="notificationTime"
                             id="notification-time"
-                            value="07:00" />
+                            value={form.notificationTime} />
                     </div>
                 </div>
 
@@ -52,7 +64,7 @@ export const HabitForm = () => {
                     </div>
                 </div>
 
-                <button type="button" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary">
                     Add Habit
                 </button>
             </form>
