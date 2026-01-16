@@ -1,4 +1,5 @@
 export const Stats = ({habits}) => {
+    const comletedHabitsAmount = habits.filter((el) => el.isToday).length
     return (
         <div className="stats-grid">
             <div className="stat-card">
@@ -6,7 +7,7 @@ export const Stats = ({habits}) => {
                 <div className="stat-label">Active Habits</div>
             </div>
             <div className="stat-card">
-                <div className="stat-value">87%</div>
+                <div className="stat-value">{Math.round((comletedHabitsAmount / habits.length)* 100)}%</div>
                 <div className="stat-label">Completion Rate</div>
             </div>
             <div className="stat-card">

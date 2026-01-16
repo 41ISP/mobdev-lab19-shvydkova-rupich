@@ -1,10 +1,11 @@
 import "./History.css"
+import { useNavigate } from "react-router-dom"
 const History = () => {
-
+ const navigate = useNavigate()
     return (
         <div className="container">
             <header>
-                <button className="back-btn">← Back to Dashboard</button>
+                <button className="back-btn" onClick={() => navigate("/")}>← Back to Dashboard</button>
                 <h1>📊 Progress Timeline</h1>
             </header>
 
