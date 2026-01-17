@@ -1,8 +1,20 @@
+import { useEffect, useState } from "react"
 import "./History.css"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
+import { getObject } from "../../storage"
+import { formatDate } from "../../utils/formatters"
 const History = () => {
- const navigate = useNavigate()
-    return (
+    const { id } = useParams()
+    const [habit, setHabit] = useState(undefined)
+    useEffect(() => {
+        const loadHabits = async () => {
+            const habits = await getObject("habits")
+            setHabit(habits.find((el) => el.id == id))
+        }
+        loadHabits()
+    }, [])
+    const navigate = useNavigate()
+    return habit && (
         <div className="container">
             <header>
                 <button className="back-btn" onClick={() => navigate("/")}>← Back to Dashboard</button>
@@ -11,14 +23,7 @@ const History = () => {
 
             <div className="filter-section">
                 <div className="filter-group">
-                    <label>Select Habit:</label>
-                    <select>
-                        <option>Morning Meditation</option>
-                        <option>Drink 8 Glasses of Water</option>
-                        <option>Read for 30 Minutes</option>
-                        <option>Evening Workout</option>
-                        <option>Practice Guitar</option>
-                    </select>
+                    {habit.name}
                 </div>
                 <div className="filter-group">
                     <label>Time Period:</label>
@@ -34,14 +39,14 @@ const History = () => {
             <div className="habit-detail-card">
                 <div className="habit-header">
                     <div className="habit-title-section">
-                        <div className="habit-title">🧘 Morning Meditation</div>
+                        <div className="habit-title">{habit.name}</div>
                         <div className="habit-subtitle">
-                            Started on December 28, 2025 • Daily at 07:00 AM
+                            Started on {formatDate(habit.startDate)} • {habit.frequency} at {habit.notificationTime}
                         </div>
                     </div>
                     <div className="habit-stats-grid">
                         <div className="stat-box">
-                            <div className="stat-box-value">15</div>
+                            <div className="stat-box-value">{habit.streak}</div>
                             <div className="stat-box-label">Current Streak</div>
                         </div>
                         <div className="stat-box">

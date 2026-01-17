@@ -11,7 +11,7 @@ const initialHabits = [
         id: nanoid(),
         name: "Изучить React",
         notificationTime: "7:00PM",
-        frequncy: "daily",
+        frequency: "daily",
         streak: 100,
         isToday: true,
         color: "green"
@@ -20,7 +20,7 @@ const initialHabits = [
         id: nanoid(),
         name: "Прочитать войну и мир",
         notificationTime: "9:00PM",
-        frequncy: "weekly",
+        frequency: "weekly",
         streak: 21,
         isToday: false,
         color: "red"
@@ -34,7 +34,7 @@ const Main = () => {
     useEffect(() => {
         const loadHabits = async () => {
             const habits = await getObject("habits")
-            setHabits(habits)
+            setHabits(habits || [])
         }
         loadHabits()
     }, [])
@@ -52,10 +52,11 @@ const Main = () => {
             id: nanoid(),
             name: form.habitName,
             notificationTime: form.notificationTime,
-            frequncy: form.frequency,
+            frequency: form.frequency,
             streak: 0,
             isToday: false,
-            color: "red"
+            color: "red",
+            startDate: new Date()
         }
         setHabits((val) => [...val, newHabit])
     }
