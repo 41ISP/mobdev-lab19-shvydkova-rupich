@@ -1,6 +1,6 @@
 export const Stats = ({habits}) => {
     const comletedHabitsAmount = habits.filter((el) => el.isToday).length
-    return (
+    return habits.length > 0 &&  (
         <div className="stats-grid">
             <div className="stat-card">
                 <div className="stat-value">{habits.length}</div>

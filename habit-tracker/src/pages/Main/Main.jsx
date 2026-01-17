@@ -1,9 +1,11 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "./Main.css"
 import { HabitCard } from "../../components/HabitCard"
 import { HabitForm } from "../../components/HabitForm"
 import { Stats } from "../../components/Stats"
 import { nanoid } from "nanoid"
+import { useNavigate } from "react-router-dom"
+import { getObject, setObject } from "../../storage"
 const initialHabits = [
     {
         id: nanoid(),
@@ -25,8 +27,17 @@ const initialHabits = [
     }
 ]
 
+
 const Main = () => {
-    const [habits, setHabits] = useState(initialHabits)
+    const [habits, setHabits] = useState([])
+    const navigate = useNavigate()
+    useEffect(() => {
+        const loadHabits = async () => {
+            const habits = await getObject("habits")
+            setHabits(habits)
+        }
+        loadHabits()
+    }, [])
     const [form, setForm] = useState({
         habitName: "as",
         frequency: "weekly",
@@ -50,9 +61,12 @@ const Main = () => {
     }
     const toggleToday = (id) => {
         const oldHabit = habits.find((el) => el.id === id)
-        const newHabit = {...oldHabit, isToday: !oldHabit.isToday, streak:  oldHabit.isToday ? oldHabit.streak - 1 : oldHabit.streak + 1} 
+        const newHabit = { ...oldHabit, isToday: !oldHabit.isToday, streak: oldHabit.isToday ? oldHabit.streak - 1 : oldHabit.streak + 1 }
         setHabits((state) => state.map((el) => el.id === id ? newHabit : el))
     }
+    useEffect(() => {
+        setObject("habits", habits)
+    }, [habits])
     return (
         <div className="container">
             <header>
@@ -64,7 +78,8 @@ const Main = () => {
             <HabitForm form={form} handleFormChange={handleFormChange} handleFormSubmit={handleFormSubmit} />
             <div className="habits-section">
                 <h2>📋 Today's Habits</h2>
-                {habits.sort((a, b) => b.streak - a.streak).map((el) => <HabitCard {...el} toggleToday={() => toggleToday(el.id)} />)}
+                {habits.sort((a, b) => b.streak - a.streak).map((el) => <HabitCard toggleToday={() => toggleToday(el.id)} {...el} 
+                onClick={() => navigate(`/history/${el.id}`)} />)}
             </div>
         </div>
     )
