@@ -56,13 +56,19 @@ const Main = () => {
             streak: 0,
             isToday: false,
             color: "red",
-            startDate: new Date()
+            startDate: new Date(new Date().setDate(new Date().getDate() - 4)),
+            history: []
         }
         setHabits((val) => [...val, newHabit])
     }
     const toggleToday = (id) => {
         const oldHabit = habits.find((el) => el.id === id)
-        const newHabit = { ...oldHabit, isToday: !oldHabit.isToday, streak: oldHabit.isToday ? oldHabit.streak - 1 : oldHabit.streak + 1 }
+        const newHistory = !oldHabit.isToday ? [...oldHabit.history, new Date()] :
+        [... oldHabit.history.slice(0, - 1 )]
+        const newHabit = { ...oldHabit, 
+            isToday: !oldHabit.isToday, 
+            history: newHistory, 
+            streak: oldHabit.isToday ? oldHabit.streak - 1 : oldHabit.streak + 1 }
         setHabits((state) => state.map((el) => el.id === id ? newHabit : el))
     }
     useEffect(() => {
