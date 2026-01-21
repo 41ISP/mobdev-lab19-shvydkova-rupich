@@ -9,9 +9,9 @@ const TimeLineItem = ({ date, completed, day, completionTime }) => {
             </div>
             <div className="timeline-content">
                 <div className="timeline-status">
-                    <div className={`status-icon${completed ? "completed" : ""}`}>{completed ? "✓" : "✗"}</div>
+                    <div className={`status-icon${completed ? " completed" : ""}`}>{completed ? "✓" : "✗"}</div>
                     <div>
-                        <div className={`status-text${completed ? "completed" : ""}`}>
+                        <div className={`status-text${completed ? " completed" : ""}`}>
                             {completed ? "Completed" : "Missed"}
                         </div>
                         <div className="timeline-note">
